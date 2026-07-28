@@ -4,6 +4,8 @@ import ProductDetailPage from "./ProductDetailPage";
 import CartPage from "./CartPage";
 import LoginPage from "./LoginPage";
 import RegisterPage from "./RegisterPage";
+import OrdersPage from "./OrdersPage";
+
 
 function App() {
   const navigate = useNavigate();
@@ -35,6 +37,7 @@ function App() {
         <Route path="/sepet" element={<CartPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/siparis" element={<OrdersPage />} />
       </Routes>
     </div>
   );

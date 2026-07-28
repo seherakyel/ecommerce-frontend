@@ -42,6 +42,13 @@ function App() {
     }).then(() => sepetiGetir());
   };
 
+  const adetGuncelle = (itemId, yeniAdet) => {
+    fetch(
+      `http://127.0.0.1:8000/cart/items/${itemId}?session_id=${SESSION_ID}&quantity=${yeniAdet}`,
+      { method: "PATCH" }
+    ).then(() => sepetiGetir());
+  };
+
   const siparisVer = () => {
     fetch("http://127.0.0.1:8000/orders/", {
       method: "POST",
@@ -90,9 +97,16 @@ function App() {
               {sepet.map((item) => (
                 <div key={item.id}>
                   <h3>{item.product.name}</h3>
-                  <p>
-                    {item.product.price} TL x {item.quantity} adet
-                  </p>
+                  <p>{item.product.price} TL</p>
+                  <div>
+                    <button onClick={() => adetGuncelle(item.id, item.quantity - 1)}>
+                      −
+                    </button>
+                    <span> {item.quantity} adet </span>
+                    <button onClick={() => adetGuncelle(item.id, item.quantity + 1)}>
+                      +
+                    </button>
+                  </div>
                   <button onClick={() => sepettenSil(item.id)}>Sil</button>
                 </div>
               ))}

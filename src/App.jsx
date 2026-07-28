@@ -20,6 +20,7 @@ function App() {
     <div>
       <nav>
         <Link to="/">Ürünler</Link> | <Link to="/sepet">Sepetim</Link> |{" "}
+        <Link to="/orders">Siparişlerim</Link> |{" "}
         {token ? (
         <Link to="/login" onClick={cikisYap}>
             Çıkış Yap
@@ -37,8 +38,8 @@ function App() {
         <Route path="/sepet" element={<CartPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/siparis" element={<OrdersPage />} />
-      </Routes>
+        <Route path="/orders" element={<OrdersPage />} />    
+        </Routes>
     </div>
   );
 }

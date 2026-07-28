@@ -23,8 +23,11 @@ function ProductsPage() {
 
     fetch("http://127.0.0.1:8000/cart/items", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ session_id: SESSION_ID, product_id: urunId, quantity: 1 }),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ product_id: urunId, quantity: 1 }),
     })
       .then((r) => r.json())
       .then(() => alert("Ürün sepete eklendi!"));

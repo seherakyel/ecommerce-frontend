@@ -1,13 +1,18 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-const SESSION_ID = "test-user";
-
 function CartPage() {
   const [cart, setCart] = useState([]);
 
+  const authHeader = () => ({
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${localStorage.getItem("token")}`,
+  });
+
   const fetchCart = () => {
-    fetch(`http://127.0.0.1:8000/cart/${SESSION_ID}`)
+    fetch("http://127.0.0.1:8000/cart/", {
+      headers: authHeader(),
+    })
       .then((r) => r.json())
       .then((data) => setCart(data));
   };
@@ -17,22 +22,23 @@ function CartPage() {
   }, []);
 
   const removeItem = (itemId) => {
-    fetch(`http://127.0.0.1:8000/cart/items/${itemId}`, { method: "DELETE" })
-      .then(() => fetchCart());
+    fetch(`http://127.0.0.1:8000/cart/items/${itemId}`, {
+      method: "DELETE",
+      headers: authHeader(),
+    }).then(() => fetchCart());
   };
 
   const updateQuantity = (itemId, newQuantity) => {
     fetch(
-      `http://127.0.0.1:8000/cart/items/${itemId}?session_id=${SESSION_ID}&quantity=${newQuantity}`,
-      { method: "PATCH" }
+      `http://127.0.0.1:8000/cart/items/${itemId}?quantity=${newQuantity}`,
+      { method: "PATCH", headers: authHeader() }
     ).then(() => fetchCart());
   };
 
   const placeOrder = () => {
     fetch("http://127.0.0.1:8000/orders/", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ session_id: SESSION_ID }),
+      headers: authHeader(),
     })
       .then((r) => r.json())
       .then((data) => {

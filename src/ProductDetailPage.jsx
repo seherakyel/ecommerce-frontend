@@ -3,7 +3,7 @@ import { useParams, Link } from "react-router-dom";
 
 const SESSION_ID = "test-user";
 
-function UrunDetaySayfasi() {
+function ProductDetailPage() {
   const { id } = useParams();
   const [urun, setUrun] = useState(null);
 
@@ -37,4 +37,4 @@ function UrunDetaySayfasi() {
   );
 }
 
-export default UrunDetaySayfasi;
+export default ProductDetailPage;

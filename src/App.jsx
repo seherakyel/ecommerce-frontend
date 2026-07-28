@@ -1,4 +1,4 @@
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, Link, useNavigate} from "react-router-dom";
 import ProductsPage from "./ProductsPage";
 import ProductDetailPage from "./ProductDetailPage";
 import CartPage from "./CartPage";
@@ -6,12 +6,28 @@ import LoginPage from "./LoginPage";
 import RegisterPage from "./RegisterPage";
 
 function App() {
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+
+  const cikisYap = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
+
   return (
     <div>
       <nav>
         <Link to="/">Ürünler</Link> | <Link to="/sepet">Sepetim</Link> |{" "}
+        {token ? (
+        <Link to="/login" onClick={cikisYap}>
+            Çıkış Yap
+        </Link>
+        ) : (
+          <>
         <Link to="/login">Giriş</Link> | <Link to="/register">Kayıt</Link>
-      </nav>
+    </>
+  )}
+</nav>
 
       <Routes>
         <Route path="/" element={<ProductsPage />} />

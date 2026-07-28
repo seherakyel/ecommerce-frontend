@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const SESSION_ID = "test-user";
 
 function ProductsPage() {
+  const navigate = useNavigate();
   const [urunler, setUrunler] = useState([]);
 
   useEffect(() => {
@@ -13,6 +14,13 @@ function ProductsPage() {
   }, []);
 
   const sepeteEkle = (urunId) => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("Sepete eklemek için giriş yapmalısın.");
+      navigate("/login");
+      return;
+    }
+
     fetch("http://127.0.0.1:8000/cart/items", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -21,7 +29,7 @@ function ProductsPage() {
       .then((r) => r.json())
       .then(() => alert("Ürün sepete eklendi!"));
   };
-
+  
   return (
     <div>
       <h1>Ürünler</h1>

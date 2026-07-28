@@ -5,7 +5,7 @@ import CartPage from "./CartPage";
 import LoginPage from "./LoginPage";
 import RegisterPage from "./RegisterPage";
 import OrdersPage from "./OrdersPage";
-
+import ProtectedRoute from "./ProtectedRoute";
 
 function App() {
   const navigate = useNavigate();
@@ -35,11 +35,23 @@ function App() {
       <Routes>
         <Route path="/" element={<ProductsPage />} />
         <Route path="/urun/:id" element={<ProductDetailPage />} />
-        <Route path="/sepet" element={<CartPage />} />
+        <Route
+          path="/sepet"
+          element={
+            <ProtectedRoute>
+              <CartPage />
+            </ProtectedRoute>
+          }/>        
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/orders" element={<OrdersPage />} />    
-        </Routes>
+        <Route
+          path="/orders"
+          element={
+            <ProtectedRoute>
+              <OrdersPage />
+            </ProtectedRoute>
+          }/>        
+          </Routes>
     </div>
   );
 }

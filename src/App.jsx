@@ -6,6 +6,7 @@ import LoginPage from "./LoginPage";
 import RegisterPage from "./RegisterPage";
 import OrdersPage from "./OrdersPage";
 import ProtectedRoute from "./ProtectedRoute";
+import FavoritesPage from "./FavoritesPage";
 
 function App() {
   const navigate = useNavigate();
@@ -21,17 +22,17 @@ function App() {
       <nav>
         <Link to="/">Ürünler</Link> | <Link to="/sepet">Sepetim</Link> |{" "}
         <Link to="/orders">Siparişlerim</Link> |{" "}
+        <Link to="/favorites">Favorilerim</Link> |{" "}
         {token ? (
-        <Link to="/login" onClick={cikisYap}>
+          <Link to="/login" onClick={cikisYap}>
             Çıkış Yap
-        </Link>
+          </Link>
         ) : (
           <>
-        <Link to="/login">Giriş</Link> | <Link to="/register">Kayıt</Link>
-    </>
-  )}
+            <Link to="/login">Giriş</Link> | <Link to="/register">Kayıt</Link>
+          </>
+        )}
 </nav>
-
       <Routes>
         <Route path="/" element={<ProductsPage />} />
         <Route path="/urun/:id" element={<ProductDetailPage />} />
@@ -50,7 +51,15 @@ function App() {
             <ProtectedRoute>
               <OrdersPage />
             </ProtectedRoute>
-          }/>        
+          }/>
+          <Route
+          path="/favorites"
+          element={
+            <ProtectedRoute>
+              <FavoritesPage />
+            </ProtectedRoute>
+          }
+        />        
           </Routes>
     </div>
   );

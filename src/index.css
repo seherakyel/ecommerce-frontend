@@ -74,7 +74,10 @@ p { margin: 0 0 0.75rem; }
 
 .page-title {
   margin-bottom: 1.5rem;
-  font-size: 1.75rem;
+  font-size: 1.85rem;
+  font-family: "Didot", "Bodoni MT", "Noto Serif Display", "Playfair Display", "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.04em;
 }
 
 .back-link {

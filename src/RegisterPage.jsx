@@ -4,6 +4,9 @@ import { useNavigate, Link } from "react-router-dom";
 function RegisterPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
@@ -11,7 +14,13 @@ function RegisterPage() {
     fetch("http://127.0.0.1:8000/auth/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({
+        email,
+        password,
+        first_name: firstName,
+        last_name: lastName,
+        phone,
+      }),
     })
       .then((r) => {
         if (!r.ok) throw new Error("Kayıt başarısız");
@@ -28,6 +37,30 @@ function RegisterPage() {
     <div className="page">
       <div className="form-card">
         <h1>Kayıt Ol</h1>
+        <div className="form-group">
+          <input
+            type="text"
+            placeholder="Ad"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+          />
+        </div>
+        <div className="form-group">
+          <input
+            type="text"
+            placeholder="Soyad"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+          />
+        </div>
+        <div className="form-group">
+          <input
+            type="tel"
+            placeholder="Telefon"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+          />
+        </div>
         <div className="form-group">
           <input
             type="email"

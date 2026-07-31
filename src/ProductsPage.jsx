@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import "./ProductsPage.css";
 
 function ProductsPage() {
   const navigate = useNavigate();
   const [urunler, setUrunler] = useState([]);
   const [favorites, setFavorites] = useState([]);
-  const [search, setSearch] = useState("");
+  const [searchParams] = useSearchParams();
+  const search = searchParams.get("search") || "";
 
   const fetchProducts = (searchTerm = "") => {
     const url = searchTerm
@@ -18,8 +19,6 @@ function ProductsPage() {
   };
 
   useEffect(() => {
-    fetchProducts();
-
     const token = localStorage.getItem("token");
     if (token) {
       fetch("http://127.0.0.1:8000/favorites/", {
@@ -34,10 +33,7 @@ function ProductsPage() {
   }, []);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      fetchProducts(search);
-    }, 400);
-    return () => clearTimeout(timer);
+    fetchProducts(search);
   }, [search]);
 
   const sepeteEkle = (urunId) => {
@@ -90,15 +86,6 @@ function ProductsPage() {
   return (
     <div className="page">
       <h1 className="page-title">Ürünler</h1>
-
-      <div className="search-bar">
-        <input
-          type="text"
-          placeholder="Ürün ara..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-      </div>
 
       <div className="products-grid">
         {urunler.length === 0 ? (

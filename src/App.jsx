@@ -7,6 +7,7 @@ import RegisterPage from "./RegisterPage";
 import OrdersPage from "./OrdersPage";
 import ProtectedRoute from "./ProtectedRoute";
 import FavoritesPage from "./FavoritesPage";
+import { useState } from "react";
 import "./App.css";
 
 function App() {
@@ -17,7 +18,16 @@ function App() {
     localStorage.removeItem("token");
     navigate("/login");
   };
+  const [search, setSearch] = useState("");
 
+  const handleSearch = (e) => {
+    setSearch(e.target.value);
+    if (e.target.value) {
+      navigate(`/?search=${encodeURIComponent(e.target.value)}`);
+    } else {
+      navigate("/");
+    }
+  };
   return (
     <div>
       <header className="header">
@@ -29,8 +39,12 @@ function App() {
               <circle cx="11" cy="11" r="8" />
               <line x1="21" y1="21" x2="16.65" y2="16.65" />
             </svg>
-            <input type="text" placeholder="Aradığınız ürünü giriniz" />
-          </div>
+            <input
+              type="text"
+              placeholder="Aradığınız ürünü giriniz"
+              value={search}
+              onChange={handleSearch}
+            />          </div>
 
           <div className="nav-actions">
             <Link to="/favorites" className="nav-action">

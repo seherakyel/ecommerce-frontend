@@ -29,17 +29,26 @@ function App() {
             <Link to="/orders">Siparişlerim</Link>
             <Link to="/favorites">Favorilerim</Link>
           </div>
-          <div className="nav-right">
-            {token ? (
-              <button className="logout-btn" onClick={cikisYap}>
-                Çıkış Yap
-              </button>
-            ) : (
-              <>
-                <Link to="/login">Giriş</Link>
-                <Link to="/register">Kayıt</Link>
-              </>
-            )}
+          <div className="nav-account">
+            <svg className="account-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+            <div className="account-info">
+              <span className="account-label">HESABIM</span>
+              <div className="account-links">
+                {token ? (
+                  <button className="logout-btn" onClick={cikisYap}>
+                    Çıkış Yap
+                  </button>
+                ) : (
+                  <>
+                    <Link to="/register">Kayıt Ol</Link>
+                    <Link to="/login">Giriş Yap</Link>
+                  </>
+                )}
+              </div>
+            </div>
           </div>
         </nav>
       </header>

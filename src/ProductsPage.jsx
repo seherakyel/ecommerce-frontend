@@ -6,11 +6,19 @@ function ProductsPage() {
   const navigate = useNavigate();
   const [urunler, setUrunler] = useState([]);
   const [favorites, setFavorites] = useState([]);
+  const [search, setSearch] = useState("");
 
-  useEffect(() => {
-    fetch("http://127.0.0.1:8000/products/")
+  const fetchProducts = (searchTerm = "") => {
+    const url = searchTerm
+      ? `http://127.0.0.1:8000/products/?search=${encodeURIComponent(searchTerm)}`
+      : "http://127.0.0.1:8000/products/";
+    fetch(url)
       .then((r) => r.json())
       .then((data) => setUrunler(data));
+  };
+
+  useEffect(() => {
+    fetchProducts();
 
     const token = localStorage.getItem("token");
     if (token) {
@@ -24,6 +32,13 @@ function ProductsPage() {
         .then((data) => { if (Array.isArray(data)) setFavorites(data.map((f) => f.product.id)); });
     }
   }, []);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      fetchProducts(search);
+    }, 400);
+    return () => clearTimeout(timer);
+  }, [search]);
 
   const sepeteEkle = (urunId) => {
     const token = localStorage.getItem("token");
@@ -75,8 +90,21 @@ function ProductsPage() {
   return (
     <div className="page">
       <h1 className="page-title">Ürünler</h1>
+
+      <div className="search-bar">
+        <input
+          type="text"
+          placeholder="Ürün ara..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+      </div>
+
       <div className="products-grid">
-        {urunler.map((urun) => (
+        {urunler.length === 0 ? (
+          <p>Aradığın ürün bulunamadı.</p>
+        ) : (
+          urunler.map((urun) => (
             <div className="product-card" key={urun.id}>
               <div className="product-card-visual">
                 {urun.image_url ? (
@@ -99,7 +127,8 @@ function ProductsPage() {
               </div>
               <button className="cart-btn" onClick={() => sepeteEkle(urun.id)}>Sepete Ekle</button>
             </div>
-        ))}
+          ))
+        )}
       </div>
     </div>
   );

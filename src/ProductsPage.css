@@ -7,6 +7,7 @@
 
 /* ===== Product Card ===== */
 .product-card {
+  position: relative;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
@@ -18,6 +19,11 @@
 
 .product-card:hover {
   box-shadow: var(--shadow-md);
+}
+
+/* ===== Image Area ===== */
+.product-card-visual {
+  position: relative;
 }
 
 .product-card-img {
@@ -38,8 +44,46 @@
   font-size: 0.9rem;
 }
 
+/* ===== Favorite Heart (top-right) ===== */
+.fav-heart {
+  position: absolute;
+  top: 0.65rem;
+  right: 0.65rem;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-border);
+  background: var(--color-surface);
+  font-size: 1.15rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--color-muted);
+  opacity: 0;
+  transition: opacity 0.2s, color 0.15s, border-color 0.15s, box-shadow 0.15s;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.product-card:hover .fav-heart {
+  opacity: 1;
+}
+
+.fav-heart:hover {
+  border-color: #e74c3c;
+  color: #e74c3c;
+}
+
+.fav-heart.active {
+  opacity: 1;
+  color: #e74c3c;
+  border-color: #e74c3c;
+}
+
+/* ===== Card Body ===== */
 .product-card-body {
-  padding: 1rem 1.25rem 1.25rem;
+  padding: 1rem 1.25rem 1rem;
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
@@ -67,32 +111,43 @@
   margin: 0;
 }
 
-.product-card-actions {
-  display: flex;
-  gap: 0.5rem;
-  margin-top: auto;
-  padding-top: 0.5rem;
-}
-
-.fav-btn {
-  background: none;
-  border: 1.5px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  padding: 0.45rem 0.75rem;
-  font-size: 0.85rem;
+/* ===== Cart Button (hover reveal) ===== */
+.cart-btn {
+  display: block;
+  width: 100%;
+  padding: 0.7rem;
+  font-size: 0.95rem;
   font-family: inherit;
+  font-weight: 600;
+  border: none;
+  background: #f27a1a;
+  color: #fff;
   cursor: pointer;
-  transition: border-color 0.15s, background 0.15s;
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: opacity 0.2s, max-height 0.25s ease, padding 0.25s ease;
 }
 
-.fav-btn:hover {
-  border-color: var(--color-accent);
-  background: rgba(30, 58, 95, 0.04);
+.product-card:hover .cart-btn {
+  opacity: 1;
+  max-height: 3rem;
+  padding: 0.7rem;
 }
 
-.fav-btn.active {
-  border-color: var(--color-accent);
-  background: rgba(30, 58, 95, 0.08);
-  color: var(--color-accent);
-  font-weight: 500;
+.cart-btn:hover {
+  background: #e06c10;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 640px) {
+  .fav-heart {
+    opacity: 1;
+  }
+
+  .cart-btn {
+    opacity: 1;
+    max-height: 3rem;
+    padding: 0.7rem;
+  }
 }

@@ -78,26 +78,26 @@ function ProductsPage() {
       <div className="products-grid">
         {urunler.map((urun) => (
           <div className="product-card" key={urun.id}>
-            {urun.image_url ? (
-              <img className="product-card-img" src={urun.image_url} alt={urun.name} />
-            ) : (
-              <div className="product-card-placeholder">Görsel yok</div>
-            )}
+            <div className="product-card-visual">
+              {urun.image_url ? (
+                <img className="product-card-img" src={urun.image_url} alt={urun.name} />
+              ) : (
+                <div className="product-card-placeholder">Görsel yok</div>
+              )}
+              <button
+                className={`fav-heart${favorites.includes(urun.id) ? " active" : ""}`}
+                onClick={() => toggleFavorite(urun.id)}
+              >
+                {favorites.includes(urun.id) ? "♥" : "♡"}
+              </button>
+            </div>
             <div className="product-card-body">
               <h3>
                 <Link to={`/urun/${urun.id}`}>{urun.name}</Link>
               </h3>
               <p className="price">{urun.price} TL</p>
-              <div className="product-card-actions">
-                <button className="btn btn-primary" onClick={() => sepeteEkle(urun.id)}>Sepete Ekle</button>
-                <button
-                  className={`fav-btn${favorites.includes(urun.id) ? " active" : ""}`}
-                  onClick={() => toggleFavorite(urun.id)}
-                >
-                  {favorites.includes(urun.id) ? "Favoride" : "Favoriye Ekle"}
-                </button>
-              </div>
             </div>
+            <button className="cart-btn" onClick={() => sepeteEkle(urun.id)}>Sepete Ekle</button>
           </div>
         ))}
       </div>

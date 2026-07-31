@@ -25,27 +25,31 @@ function RegisterPage() {
   };
 
   return (
-    <div>
-      <h1>Kayıt Ol</h1>
-      <input
-        type="email"
-        placeholder="E-posta"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <br />
-      <input
-        type="password"
-        placeholder="Şifre"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <br />
-      <button onClick={handleRegister}>Kayıt Ol</button>
-      <p>{message}</p>
-      <p>
-        Zaten hesabın var mı? <Link to="/login">Giriş Yap</Link>
-      </p>
+    <div className="page">
+      <div className="form-card">
+        <h1>Kayıt Ol</h1>
+        <div className="form-group">
+          <input
+            type="email"
+            placeholder="E-posta"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+        <div className="form-group">
+          <input
+            type="password"
+            placeholder="Şifre"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+        <button className="btn btn-primary" onClick={handleRegister}>Kayıt Ol</button>
+        <p className="form-message">{message}</p>
+        <p className="form-footer">
+          Zaten hesabın var mı? <Link to="/login">Giriş Yap</Link>
+        </p>
+      </div>
     </div>
   );
 }

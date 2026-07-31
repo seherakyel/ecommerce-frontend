@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
+import "./ProductDetailPage.css";
 
 function ProductDetailPage() {
   const { id } = useParams();
@@ -61,23 +62,34 @@ function ProductDetailPage() {
     alert("Link kopyalandı! Instagram'da paylaşabilirsin.");
   };
 
-  if (!urun) return <p>Yükleniyor...</p>;
+  if (!urun) return <p className="loading">Yükleniyor...</p>;
 
   return (
-    <div>
-      <Link to="/">← Ürünlere Dön</Link>
-      <h1>{urun.name}</h1>
-      <p>{urun.description}</p>
-      <h2>{urun.price} TL</h2>
-      <p>Stok: {urun.stock}</p>
-      <button onClick={sepeteEkle}>Sepete Ekle</button>
+    <div className="page">
+      <Link to="/" className="back-link">← Ürünlere Dön</Link>
+      <div className="detail-layout">
+        {urun.image_url ? (
+          <img className="detail-img" src={urun.image_url} alt={urun.name} />
+        ) : (
+          <div className="detail-img-placeholder">Görsel yok</div>
+        )}
+        <div className="detail-card">
+          <h1>{urun.name}</h1>
+          <p className="description">{urun.description}</p>
+          <p className="price">{urun.price} TL</p>
+          <p className="stock">Stok: {urun.stock}</p>
+          <button className="btn btn-primary" onClick={sepeteEkle}>Sepete Ekle</button>
 
-      <div>
-        <p>Paylaş:</p>
-        <button onClick={shareWhatsApp}>WhatsApp</button>
-        <button onClick={shareTwitter}>X (Twitter)</button>
-        <button onClick={shareFacebook}>Facebook</button>
-        <button onClick={copyLink}>Linki Kopyala</button>
+          <div className="share-section">
+            <p>Paylaş:</p>
+            <div className="share-buttons">
+              <button className="btn btn-outline btn-sm" onClick={shareWhatsApp}>WhatsApp</button>
+              <button className="btn btn-outline btn-sm" onClick={shareTwitter}>X (Twitter)</button>
+              <button className="btn btn-outline btn-sm" onClick={shareFacebook}>Facebook</button>
+              <button className="btn btn-outline btn-sm" onClick={copyLink}>Linki Kopyala</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

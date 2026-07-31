@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import "./ProductsPage.css";
 
 function ProductsPage() {
   const navigate = useNavigate();
@@ -16,8 +17,11 @@ function ProductsPage() {
       fetch("http://127.0.0.1:8000/favorites/", {
         headers: { Authorization: `Bearer ${token}` },
       })
-        .then((r) => r.json())
-        .then((data) => setFavorites(data.map((f) => f.product.id)));
+        .then((r) => {
+          if (!r.ok) return null;
+          return r.json();
+        })
+        .then((data) => { if (Array.isArray(data)) setFavorites(data.map((f) => f.product.id)); });
     }
   }, []);
 
@@ -69,20 +73,34 @@ function ProductsPage() {
   };
 
   return (
-    <div>
-      <h1>Ürünler</h1>
-      {urunler.map((urun) => (
-        <div key={urun.id}>
-          <Link to={`/urun/${urun.id}`}>
-            <h3>{urun.name}</h3>
-          </Link>
-          <p>{urun.price} TL</p>
-          <button onClick={() => sepeteEkle(urun.id)}>Sepete Ekle</button>
-          <button onClick={() => toggleFavorite(urun.id)}>
-            {favorites.includes(urun.id) ? "❤️ Favoride" : "🤍 Favoriye Ekle"}
-          </button>
-        </div>
-      ))}
+    <div className="page">
+      <h1 className="page-title">Ürünler</h1>
+      <div className="products-grid">
+        {urunler.map((urun) => (
+          <div className="product-card" key={urun.id}>
+            {urun.image_url ? (
+              <img className="product-card-img" src={urun.image_url} alt={urun.name} />
+            ) : (
+              <div className="product-card-placeholder">Görsel yok</div>
+            )}
+            <div className="product-card-body">
+              <h3>
+                <Link to={`/urun/${urun.id}`}>{urun.name}</Link>
+              </h3>
+              <p className="price">{urun.price} TL</p>
+              <div className="product-card-actions">
+                <button className="btn btn-primary" onClick={() => sepeteEkle(urun.id)}>Sepete Ekle</button>
+                <button
+                  className={`fav-btn${favorites.includes(urun.id) ? " active" : ""}`}
+                  onClick={() => toggleFavorite(urun.id)}
+                >
+                  {favorites.includes(urun.id) ? "Favoride" : "Favoriye Ekle"}
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

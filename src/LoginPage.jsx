@@ -26,27 +26,31 @@ function LoginPage() {
   };
 
   return (
-    <div>
-      <h1>Giriş Yap</h1>
-      <input
-        type="email"
-        placeholder="E-posta"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <br />
-      <input
-        type="password"
-        placeholder="Şifre"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <br />
-      <button onClick={handleLogin}>Giriş Yap</button>
-      <p>{message}</p>
-      <p>
-        Hesabın yok mu? <Link to="/register">Kayıt Ol</Link>
-      </p>
+    <div className="page">
+      <div className="form-card">
+        <h1>Giriş Yap</h1>
+        <div className="form-group">
+          <input
+            type="email"
+            placeholder="E-posta"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+        <div className="form-group">
+          <input
+            type="password"
+            placeholder="Şifre"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+        <button className="btn btn-primary" onClick={handleLogin}>Giriş Yap</button>
+        <p className="form-message">{message}</p>
+        <p className="form-footer">
+          Hesabın yok mu? <Link to="/register">Kayıt Ol</Link>
+        </p>
+      </div>
     </div>
   );
 }

@@ -6,19 +6,28 @@ function ProductsPage() {
   const navigate = useNavigate();
   const [urunler, setUrunler] = useState([]);
   const [favorites, setFavorites] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [searchParams] = useSearchParams();
   const search = searchParams.get("search") || "";
+  const categoryId = searchParams.get("category_id") || "";
 
-  const fetchProducts = (searchTerm = "") => {
-    const url = searchTerm
-      ? `http://127.0.0.1:8000/products/?search=${encodeURIComponent(searchTerm)}`
-      : "http://127.0.0.1:8000/products/";
+  const fetchProducts = () => {
+    let url = "http://127.0.0.1:8000/products/";
+    const params = [];
+    if (search) params.push(`search=${encodeURIComponent(search)}`);
+    if (categoryId) params.push(`category_id=${categoryId}`);
+    if (params.length > 0) url += "?" + params.join("&");
+
     fetch(url)
       .then((r) => r.json())
       .then((data) => setUrunler(data));
   };
 
   useEffect(() => {
+    fetch("http://127.0.0.1:8000/categories/")
+      .then((r) => r.json())
+      .then((data) => setCategories(data));
+
     const token = localStorage.getItem("token");
     if (token) {
       fetch("http://127.0.0.1:8000/favorites/", {
@@ -33,8 +42,16 @@ function ProductsPage() {
   }, []);
 
   useEffect(() => {
-    fetchProducts(search);
-  }, [search]);
+    fetchProducts();
+  }, [search, categoryId]);
+
+  const selectCategory = (id) => {
+    if (id) {
+      navigate(`/?category_id=${id}`);
+    } else {
+      navigate("/");
+    }
+  };
 
   const sepeteEkle = (urunId) => {
     const token = localStorage.getItem("token");
@@ -85,11 +102,29 @@ function ProductsPage() {
 
   return (
     <div className="page">
+      <div className="category-bar">
+        <button
+          className={`category-btn${!categoryId ? " active" : ""}`}
+          onClick={() => selectCategory("")}
+        >
+          Tümü
+        </button>
+        {categories.map((cat) => (
+          <button
+            key={cat.id}
+            className={`category-btn${categoryId == cat.id ? " active" : ""}`}
+            onClick={() => selectCategory(cat.id)}
+          >
+            {cat.name}
+          </button>
+        ))}
+      </div>
+
       <h1 className="page-title">Ürünler</h1>
 
       <div className="products-grid">
         {urunler.length === 0 ? (
-          <p>Aradığın ürün bulunamadı.</p>
+          <p>Ürün bulunamadı.</p>
         ) : (
           urunler.map((urun) => (
             <div className="product-card" key={urun.id}>

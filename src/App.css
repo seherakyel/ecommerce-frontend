@@ -13,18 +13,46 @@
   height: 76px;
   display: flex;
   align-items: center;
-  gap: 2.5rem;
+  gap: 2rem;
   padding: 0 2rem;
+}
+
+/* ===== Nav Left (hamburger + brand) ===== */
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-shrink: 0;
+}
+
+/* ===== Hamburger (always 3 lines) ===== */
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4.5px;
+  width: 1.5rem;
+  height: 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.hamburger span {
+  display: block;
+  height: 1.8px;
+  width: 100%;
+  background: var(--color-heading);
+  border-radius: 2px;
 }
 
 /* ===== Brand / Logo ===== */
 .nav-brand {
-  flex-shrink: 0;
   text-decoration: none !important;
-  font-family: "Didot", "Bodoni MT", "Noto Serif Display", "Playfair Display", "Times New Roman", serif;
-  font-size: 1.65rem;
+  font-size: 1.45rem;
   font-weight: 400;
-  letter-spacing: 0.3em;
+  letter-spacing: 0.32em;
   color: var(--color-heading) !important;
   white-space: nowrap;
 }
@@ -37,10 +65,11 @@
 
 .nav-search input {
   width: 100%;
-  height: 2.85rem;
+  height: 2.75rem;
   padding: 0 1rem 0 2.5rem;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   font-family: inherit;
+  font-weight: 300;
   color: var(--color-text);
   background: transparent;
   border: none;
@@ -93,7 +122,7 @@
 }
 
 .nav-action:hover {
-  opacity: 0.65;
+  opacity: 0.6;
 }
 
 .nav-action svg {
@@ -110,18 +139,18 @@
   transform: translateX(-50%) translateY(4px);
   background: var(--color-surface);
   color: var(--color-heading);
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   font-weight: 500;
   letter-spacing: 0.02em;
   white-space: nowrap;
-  padding: 0.4rem 0.75rem;
+  padding: 0.35rem 0.65rem;
   border-radius: 6px;
   border: 1px solid var(--color-border);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
+  transition: opacity 0.2s, visibility 0.2s, transform 0.2s;
 }
 
 .nav-action:hover span {
@@ -130,8 +159,151 @@
   transform: translateX(-50%) translateY(0);
 }
 
-.nav-action-divider {
-  display: none;
+/* ===== Mega Menu Wrapper ===== */
+.mega-wrapper {
+  position: relative;
+  z-index: 95;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  animation: slideDown 0.2s ease;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== Horizontal Category Strip ===== */
+.mega-strip {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1.25rem 2rem;
+  overflow-x: auto;
+}
+
+.mega-cat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  min-width: 80px;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: border-color 0.15s;
+  font-family: inherit;
+}
+
+.mega-cat-item:hover,
+.mega-cat-item.active {
+  border-bottom-color: var(--color-heading);
+}
+
+.mega-cat-img {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+  transition: transform 0.15s;
+}
+
+.mega-cat-item:hover .mega-cat-img {
+  transform: scale(1.06);
+}
+
+.mega-cat-name {
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--color-text);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.mega-cat-item:hover .mega-cat-name,
+.mega-cat-item.active .mega-cat-name {
+  color: var(--color-heading);
+  font-weight: 600;
+}
+
+/* ===== Dropdown (subcategories + image) ===== */
+.mega-dropdown {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: flex;
+  gap: 3rem;
+  padding: 1.5rem 2rem 2rem;
+  border-top: 1px solid var(--color-border);
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.mega-sub-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 180px;
+}
+
+.mega-sub-item {
+  background: none;
+  border: none;
+  padding: 0.4rem 0;
+  font-size: 0.88rem;
+  font-family: inherit;
+  font-weight: 400;
+  color: var(--color-text);
+  text-align: left;
+  cursor: pointer;
+  transition: color 0.12s;
+}
+
+.mega-sub-item:hover {
+  color: var(--color-heading);
+}
+
+.mega-sub-viewall {
+  background: none;
+  border: none;
+  padding: 0.5rem 0 0;
+  margin-top: 0.5rem;
+  font-size: 0.88rem;
+  font-family: inherit;
+  font-weight: 600;
+  color: var(--color-heading);
+  text-align: left;
+  cursor: pointer;
+  transition: opacity 0.12s;
+}
+
+.mega-sub-viewall:hover {
+  opacity: 0.7;
+}
+
+/* ===== Subcategory Image ===== */
+.mega-sub-image {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+}
+
+.mega-sub-image img {
+  max-width: 100%;
+  height: 240px;
+  object-fit: cover;
+  border-radius: var(--radius);
 }
 
 /* ===== Main Content ===== */
@@ -141,14 +313,29 @@
 }
 
 /* ===== Responsive ===== */
+@media (max-width: 900px) {
+  .mega-sub-image {
+    display: none;
+  }
+
+  .mega-cat-img {
+    width: 52px;
+    height: 52px;
+  }
+
+  .mega-strip {
+    gap: 0.5rem;
+  }
+}
+
 @media (max-width: 768px) {
   .header nav {
-    gap: 1.25rem;
+    gap: 1rem;
     padding: 0 1rem;
   }
 
   .nav-brand {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     letter-spacing: 0.2em;
   }
 
@@ -160,13 +347,36 @@
     width: 1.25rem;
     height: 1.25rem;
   }
+
+  .mega-cat-img {
+    width: 46px;
+    height: 46px;
+  }
+
+  .mega-cat-name {
+    font-size: 0.65rem;
+  }
+
+  .mega-strip {
+    padding: 1rem;
+    gap: 0.35rem;
+  }
+
+  .mega-cat-item {
+    min-width: 60px;
+    padding: 0.35rem 0.4rem;
+  }
 }
 
 @media (max-width: 480px) {
   .header nav {
     height: 58px;
-    gap: 0.75rem;
+    gap: 0.5rem;
     padding: 0 0.75rem;
+  }
+
+  .nav-left {
+    gap: 0.65rem;
   }
 
   .nav-brand {
@@ -177,11 +387,6 @@
   .nav-search input {
     height: 2.2rem;
     font-size: 0.8rem;
-  }
-
-  .search-icon {
-    width: 1rem;
-    height: 1rem;
   }
 
   .nav-actions {
@@ -195,5 +400,14 @@
 
   .nav-action span {
     display: none;
+  }
+
+  .mega-strip {
+    justify-content: flex-start;
+    padding: 0.75rem;
+  }
+
+  .mega-dropdown {
+    padding: 1rem;
   }
 }

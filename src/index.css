@@ -17,7 +17,7 @@
   --radius-sm: 6px;
   --header-height: 64px;
   --max-width: 1200px;
-  --font: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
 
 /* ===== Reset & Base ===== */
@@ -55,7 +55,7 @@ a:hover {
 h1, h2, h3 {
   color: var(--color-heading);
   margin: 0 0 0.5rem;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 h1 { font-size: 1.75rem; }
@@ -74,10 +74,9 @@ p { margin: 0 0 0.75rem; }
 
 .page-title {
   margin-bottom: 1.5rem;
-  font-size: 1.85rem;
-  font-family: "Didot", "Bodoni MT", "Noto Serif Display", "Playfair Display", "Times New Roman", serif;
-  font-weight: 700;
-  letter-spacing: 0.04em;
+  font-size: 1.6rem;
+  font-weight: 300;
+  letter-spacing: 0.02em;
 }
 
 .back-link {

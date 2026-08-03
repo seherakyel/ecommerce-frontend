@@ -96,7 +96,7 @@
 
 .product-card h3 a {
   color: var(--color-heading);
-  font-weight: 600;
+  font-weight: 400;
 }
 
 .product-card h3 a:hover {
@@ -105,9 +105,9 @@
 }
 
 .product-card .price {
-  font-size: 1.15rem;
-  font-weight: 600;
-  color: var(--color-accent);
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--color-heading);
   margin: 0;
 }
 

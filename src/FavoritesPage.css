@@ -83,7 +83,7 @@
 
 .favorite-card h3 a {
   color: var(--color-heading);
-  font-weight: 600;
+  font-weight: 400;
 }
 
 .favorite-card h3 a:hover {
@@ -92,9 +92,9 @@
 }
 
 .favorite-card .price {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: var(--color-accent);
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--color-heading);
   margin: 0;
 }
 

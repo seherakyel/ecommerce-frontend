@@ -6,13 +6,10 @@ function ProductsPage() {
   const navigate = useNavigate();
   const [urunler, setUrunler] = useState([]);
   const [favorites, setFavorites] = useState([]);
-  const [mainCategories, setMainCategories] = useState([]);
-  const [subCategories, setSubCategories] = useState([]);
   const [searchParams] = useSearchParams();
 
   const search = searchParams.get("search") || "";
   const categoryId = searchParams.get("category_id") || "";
-  const parentId = searchParams.get("parent_id") || "";
 
   const fetchProducts = () => {
     let url = "http://127.0.0.1:8000/products/";
@@ -26,12 +23,7 @@ function ProductsPage() {
       .then((data) => setUrunler(data));
   };
 
-  // Ana kategorileri bir kez çek
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/categories/")
-      .then((r) => r.json())
-      .then((data) => setMainCategories(data));
-
     const token = localStorage.getItem("token");
     if (token) {
       fetch("http://127.0.0.1:8000/favorites/", {
@@ -42,33 +34,9 @@ function ProductsPage() {
     }
   }, []);
 
-  // Bir ana kategori seçilince alt kategorilerini çek
-  useEffect(() => {
-    if (parentId) {
-      fetch(`http://127.0.0.1:8000/categories/?parent_id=${parentId}`)
-        .then((r) => r.json())
-        .then((data) => setSubCategories(data));
-    } else {
-      setSubCategories([]);
-    }
-  }, [parentId]);
-
-  // Ürünleri arama/kategori değişince çek
   useEffect(() => {
     fetchProducts();
   }, [search, categoryId]);
-
-  const selectMainCategory = (id) => {
-    navigate(`/?parent_id=${id}`);
-  };
-
-  const selectSubCategory = (id) => {
-    navigate(`/?parent_id=${parentId}&category_id=${id}`);
-  };
-
-  const clearCategories = () => {
-    navigate("/");
-  };
 
   const sepeteEkle = (urunId) => {
     const token = localStorage.getItem("token");
@@ -116,45 +84,10 @@ function ProductsPage() {
 
   return (
     <div className="page">
-      {/* Ana kategoriler */}
-      <div className="category-bar">
-        <button
-          className={`category-btn${!parentId ? " active" : ""}`}
-          onClick={clearCategories}
-        >
-          Tümü
-        </button>
-        {mainCategories.map((cat) => (
-          <button
-            key={cat.id}
-            className={`category-btn${parentId == cat.id ? " active" : ""}`}
-            onClick={() => selectMainCategory(cat.id)}
-          >
-            {cat.name}
-          </button>
-        ))}
-      </div>
-
-      {/* Alt kategoriler (bir ana kategori seçiliyse) */}
-      {subCategories.length > 0 && (
-        <div className="subcategory-bar">
-          {subCategories.map((sub) => (
-            <button
-              key={sub.id}
-              className={`subcategory-btn${categoryId == sub.id ? " active" : ""}`}
-              onClick={() => selectSubCategory(sub.id)}
-            >
-              {sub.name}
-            </button>
-          ))}
-        </div>
-      )}
-
       <h1 className="page-title">Ürünler</h1>
-
       <div className="products-grid">
         {urunler.length === 0 ? (
-          <p>Ürün bulunamadı.</p>
+          <p className="empty-state">Ürün bulunamadı.</p>
         ) : (
           urunler.map((urun) => (
             <div className="product-card" key={urun.id}>

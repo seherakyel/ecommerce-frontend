@@ -1,4 +1,5 @@
-import { Routes, Route, Link, useNavigate} from "react-router-dom";
+import { Routes, Route, Link, useNavigate } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
 import ProductsPage from "./ProductsPage";
 import ProductDetailPage from "./ProductDetailPage";
 import CartPage from "./CartPage";
@@ -7,7 +8,6 @@ import RegisterPage from "./RegisterPage";
 import OrdersPage from "./OrdersPage";
 import ProtectedRoute from "./ProtectedRoute";
 import FavoritesPage from "./FavoritesPage";
-import { useState } from "react";
 import "./App.css";
 
 function App() {
@@ -18,8 +18,8 @@ function App() {
     localStorage.removeItem("token");
     navigate("/login");
   };
-  const [search, setSearch] = useState("");
 
+  const [search, setSearch] = useState("");
   const handleSearch = (e) => {
     setSearch(e.target.value);
     if (e.target.value) {
@@ -28,11 +28,79 @@ function App() {
       navigate("/");
     }
   };
+
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [hoveredCatId, setHoveredCatId] = useState(null);
+  const [subCats, setSubCats] = useState([]);
+  const subCatCache = useRef({});
+  const menuRef = useRef(null);
+
+  useEffect(() => {
+    fetch("http://127.0.0.1:8000/categories/")
+      .then((r) => r.json())
+      .then((data) => { if (Array.isArray(data)) setCategories(data); });
+  }, []);
+
+  const handleCatHover = (catId) => {
+    setHoveredCatId(catId);
+    if (subCatCache.current[catId]) {
+      setSubCats(subCatCache.current[catId]);
+    } else {
+      fetch(`http://127.0.0.1:8000/categories/?parent_id=${catId}`)
+        .then((r) => r.json())
+        .then((data) => {
+          if (Array.isArray(data)) {
+            subCatCache.current[catId] = data;
+            setSubCats(data);
+          }
+        });
+    }
+  };
+
+  const handleCatLeave = () => {
+    setHoveredCatId(null);
+    setSubCats([]);
+  };
+
+  const selectCategory = (parentId, catId) => {
+    setMenuOpen(false);
+    setHoveredCatId(null);
+    setSubCats([]);
+    if (catId) {
+      navigate(`/?parent_id=${parentId}&category_id=${catId}`);
+    } else {
+      navigate(`/?parent_id=${parentId}`);
+    }
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (menuOpen && menuRef.current && !menuRef.current.contains(e.target)) {
+        setMenuOpen(false);
+        setHoveredCatId(null);
+        setSubCats([]);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [menuOpen]);
+
+  const hoveredCat = categories.find((c) => c.id === hoveredCatId);
+
   return (
     <div>
       <header className="header">
         <nav>
-          <Link to="/" className="nav-brand">SHOP NOVA</Link>
+          <div className="nav-left">
+            <button
+              className="hamburger"
+              onClick={() => setMenuOpen(!menuOpen)}
+            >
+              <span /><span /><span />
+            </button>
+            <Link to="/" className="nav-brand">SHOP NOVA</Link>
+          </div>
 
           <div className="nav-search">
             <svg className="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -44,7 +112,8 @@ function App() {
               placeholder="Aradığınız ürünü giriniz"
               value={search}
               onChange={handleSearch}
-            />          </div>
+            />
+          </div>
 
           <div className="nav-actions">
             <Link to="/favorites" className="nav-action">
@@ -69,7 +138,6 @@ function App() {
               </svg>
               <span>Sepetim</span>
             </Link>
-            <div className="nav-action-divider" />
             {token ? (
               <button className="nav-action" onClick={cikisYap}>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -90,6 +158,57 @@ function App() {
           </div>
         </nav>
       </header>
+
+      {menuOpen && (
+        <div className="mega-wrapper" ref={menuRef} onMouseLeave={handleCatLeave}>
+          <div className="mega-strip">
+            {categories.map((cat) => (
+              <button
+                key={cat.id}
+                className={`mega-cat-item${hoveredCatId === cat.id ? " active" : ""}`}
+                onMouseEnter={() => handleCatHover(cat.id)}
+                onClick={() => selectCategory(cat.id)}
+              >
+                <img
+                  className="mega-cat-img"
+                  src={`https://picsum.photos/seed/cat${cat.id}/100/100`}
+                  alt=""
+                />
+                <span className="mega-cat-name">{cat.name}</span>
+              </button>
+            ))}
+          </div>
+
+          {hoveredCatId && subCats.length > 0 && (
+            <div className="mega-dropdown">
+              <div className="mega-sub-list">
+                {subCats.map((sub) => (
+                  <button
+                    key={sub.id}
+                    className="mega-sub-item"
+                    onClick={() => selectCategory(hoveredCatId, sub.id)}
+                  >
+                    {sub.name}
+                  </button>
+                ))}
+                <button
+                  className="mega-sub-viewall"
+                  onClick={() => selectCategory(hoveredCatId)}
+                >
+                  Tümünü Gör
+                </button>
+              </div>
+              <div className="mega-sub-image">
+                <img
+                  src={`https://picsum.photos/seed/${hoveredCatId}/480/360`}
+                  alt=""
+                />
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
       <main className="main-content">
         <Routes>
           <Route path="/" element={<ProductsPage />} />
@@ -100,7 +219,7 @@ function App() {
               <ProtectedRoute>
                 <CartPage />
               </ProtectedRoute>
-            }/>        
+            }/>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route
@@ -117,7 +236,7 @@ function App() {
                 <FavoritesPage />
               </ProtectedRoute>
             }
-          />        
+          />
         </Routes>
       </main>
     </div>

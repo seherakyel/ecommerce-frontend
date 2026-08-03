@@ -6,10 +6,13 @@ function ProductsPage() {
   const navigate = useNavigate();
   const [urunler, setUrunler] = useState([]);
   const [favorites, setFavorites] = useState([]);
-  const [categories, setCategories] = useState([]);
+  const [mainCategories, setMainCategories] = useState([]);
+  const [subCategories, setSubCategories] = useState([]);
   const [searchParams] = useSearchParams();
+
   const search = searchParams.get("search") || "";
   const categoryId = searchParams.get("category_id") || "";
+  const parentId = searchParams.get("parent_id") || "";
 
   const fetchProducts = () => {
     let url = "http://127.0.0.1:8000/products/";
@@ -23,34 +26,48 @@ function ProductsPage() {
       .then((data) => setUrunler(data));
   };
 
+  // Ana kategorileri bir kez çek
   useEffect(() => {
     fetch("http://127.0.0.1:8000/categories/")
       .then((r) => r.json())
-      .then((data) => setCategories(data));
+      .then((data) => setMainCategories(data));
 
     const token = localStorage.getItem("token");
     if (token) {
       fetch("http://127.0.0.1:8000/favorites/", {
         headers: { Authorization: `Bearer ${token}` },
       })
-        .then((r) => {
-          if (!r.ok) return null;
-          return r.json();
-        })
+        .then((r) => (r.ok ? r.json() : null))
         .then((data) => { if (Array.isArray(data)) setFavorites(data.map((f) => f.product.id)); });
     }
   }, []);
 
+  // Bir ana kategori seçilince alt kategorilerini çek
+  useEffect(() => {
+    if (parentId) {
+      fetch(`http://127.0.0.1:8000/categories/?parent_id=${parentId}`)
+        .then((r) => r.json())
+        .then((data) => setSubCategories(data));
+    } else {
+      setSubCategories([]);
+    }
+  }, [parentId]);
+
+  // Ürünleri arama/kategori değişince çek
   useEffect(() => {
     fetchProducts();
   }, [search, categoryId]);
 
-  const selectCategory = (id) => {
-    if (id) {
-      navigate(`/?category_id=${id}`);
-    } else {
-      navigate("/");
-    }
+  const selectMainCategory = (id) => {
+    navigate(`/?parent_id=${id}`);
+  };
+
+  const selectSubCategory = (id) => {
+    navigate(`/?parent_id=${parentId}&category_id=${id}`);
+  };
+
+  const clearCategories = () => {
+    navigate("/");
   };
 
   const sepeteEkle = (urunId) => {
@@ -60,7 +77,6 @@ function ProductsPage() {
       navigate("/login");
       return;
     }
-
     fetch("http://127.0.0.1:8000/cart/items", {
       method: "POST",
       headers: {
@@ -80,9 +96,7 @@ function ProductsPage() {
       navigate("/login");
       return;
     }
-
     const isFavorite = favorites.includes(productId);
-
     if (isFavorite) {
       fetch(`http://127.0.0.1:8000/favorites/${productId}`, {
         method: "DELETE",
@@ -102,23 +116,39 @@ function ProductsPage() {
 
   return (
     <div className="page">
+      {/* Ana kategoriler */}
       <div className="category-bar">
         <button
-          className={`category-btn${!categoryId ? " active" : ""}`}
-          onClick={() => selectCategory("")}
+          className={`category-btn${!parentId ? " active" : ""}`}
+          onClick={clearCategories}
         >
           Tümü
         </button>
-        {categories.map((cat) => (
+        {mainCategories.map((cat) => (
           <button
             key={cat.id}
-            className={`category-btn${categoryId == cat.id ? " active" : ""}`}
-            onClick={() => selectCategory(cat.id)}
+            className={`category-btn${parentId == cat.id ? " active" : ""}`}
+            onClick={() => selectMainCategory(cat.id)}
           >
             {cat.name}
           </button>
         ))}
       </div>
+
+      {/* Alt kategoriler (bir ana kategori seçiliyse) */}
+      {subCategories.length > 0 && (
+        <div className="subcategory-bar">
+          {subCategories.map((sub) => (
+            <button
+              key={sub.id}
+              className={`subcategory-btn${categoryId == sub.id ? " active" : ""}`}
+              onClick={() => selectSubCategory(sub.id)}
+            >
+              {sub.name}
+            </button>
+          ))}
+        </div>
+      )}
 
       <h1 className="page-title">Ürünler</h1>
 

@@ -218,11 +218,11 @@
 }
 
 .mega-cat-name {
-  font-size: 0.72rem;
-  font-weight: 500;
+  font-size: 0.68rem;
+  font-weight: 400;
   color: var(--color-text);
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.18em;
   white-space: nowrap;
   text-align: center;
 }
@@ -230,7 +230,7 @@
 .mega-cat-item:hover .mega-cat-name,
 .mega-cat-item.active .mega-cat-name {
   color: var(--color-heading);
-  font-weight: 600;
+  font-weight: 500;
 }
 
 /* ===== Dropdown (subcategories + image) ===== */
@@ -260,17 +260,21 @@
   background: none;
   border: none;
   padding: 0.4rem 0;
-  font-size: 0.88rem;
+  font-size: 0.82rem;
   font-family: inherit;
   font-weight: 400;
   color: var(--color-text);
   text-align: left;
   cursor: pointer;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
   transition: color 0.12s;
 }
 
 .mega-sub-item:hover {
   color: var(--color-heading);
+  font-weight: 500;
+  text-decoration: underline;
 }
 
 .mega-sub-viewall {
@@ -278,12 +282,14 @@
   border: none;
   padding: 0.5rem 0 0;
   margin-top: 0.5rem;
-  font-size: 0.88rem;
+  font-size: 0.82rem;
   font-family: inherit;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--color-heading);
   text-align: left;
   cursor: pointer;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
   transition: opacity 0.12s;
 }
 

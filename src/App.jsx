@@ -38,10 +38,21 @@ function App() {
   const subCatCache = useRef({});
   const menuRef = useRef(null);
 
+  const categoryOrder = [1, 23, 41, 49, 54, 79, 102, 130, 149, 164, 179];
+
   useEffect(() => {
     fetch("http://127.0.0.1:8000/categories/")
       .then((r) => r.json())
-      .then((data) => { if (Array.isArray(data)) setCategories(data); });
+      .then((data) => {
+        if (Array.isArray(data)) {
+          data.sort((a, b) => {
+            const ia = categoryOrder.indexOf(a.id);
+            const ib = categoryOrder.indexOf(b.id);
+            return (ia === -1 ? 999 : ia) - (ib === -1 ? 999 : ib);
+          });
+          setCategories(data);
+        }
+      });
   }, []);
 
   const handleCatHover = (catId) => {

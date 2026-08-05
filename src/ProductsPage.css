@@ -82,14 +82,14 @@
 }
 
 .fav-heart:hover {
-  color: #e74c3c;
+  color: #972C34;
   background: rgba(255, 255, 255, 0.95);
   transform: scale(1.1);
 }
 
 .fav-heart.active {
   opacity: 1;
-  color: #e74c3c;
+  color: #972C34;
 }
 
 /* ===== Cart Overlay Button (bottom of image, on hover) ===== */
@@ -162,7 +162,7 @@
 .product-card .price {
   font-size: 0.95rem;
   font-weight: 600;
-  color: #c0392b;
+  color: #972C34;
   margin: 0;
   letter-spacing: 0.01em;
 }

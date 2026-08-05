@@ -12,13 +12,32 @@
   min-width: 0;
 }
 
+/* ===== Zoom Container ===== */
+.detail-zoom-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--color-bg);
+  cursor: zoom-in;
+}
+
 .detail-main-img {
   width: 100%;
   aspect-ratio: 1 / 1;
   object-fit: cover;
   display: block;
-  border-radius: var(--radius);
-  background: var(--color-bg);
+  transition: transform 0.15s ease-out;
+  transform-origin: center center;
+}
+
+@media (max-width: 768px) {
+  .detail-zoom-container {
+    cursor: default;
+  }
+
+  .detail-main-img {
+    transition: none;
+  }
 }
 
 .detail-img-placeholder {

@@ -10,6 +10,7 @@ function ProductDetailPage() {
   const [isFavorite, setIsFavorite] = useState(false);
   const [shareOpen, setShareOpen] = useState(false);
   const [openAccordion, setOpenAccordion] = useState("description");
+  const [zoomStyle, setZoomStyle] = useState({});
 
   useEffect(() => {
     fetch(`http://127.0.0.1:8000/products/${id}`)
@@ -99,6 +100,20 @@ function ProductDetailPage() {
     setOpenAccordion(openAccordion === key ? null : key);
   };
 
+  const isTouchDevice = typeof window !== "undefined" && window.matchMedia("(hover: none)").matches;
+
+  const handleZoomMove = (e) => {
+    if (isTouchDevice) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    setZoomStyle({ transformOrigin: `${x}% ${y}%`, transform: "scale(2.5)" });
+  };
+
+  const handleZoomLeave = () => {
+    setZoomStyle({});
+  };
+
   if (!urun) return <p className="loading">Yükleniyor...</p>;
 
   const categoryName = urun.category?.name || "Ürünler";
@@ -119,7 +134,19 @@ function ProductDetailPage() {
         {/* Sol: Görsel Alanı */}
         <div className="detail-image-area">
           {urun.image_url ? (
-            <img className="detail-main-img" src={urun.image_url} alt={urun.name} />
+            <div
+              className="detail-zoom-container"
+              onMouseMove={handleZoomMove}
+              onMouseLeave={handleZoomLeave}
+            >
+              <img
+                className="detail-main-img"
+                src={urun.image_url}
+                alt={urun.name}
+                style={zoomStyle}
+                draggable={false}
+              />
+            </div>
           ) : (
             <div className="detail-img-placeholder">Görsel yok</div>
           )}

@@ -169,11 +169,11 @@ function App() {
                 onMouseEnter={() => handleCatHover(cat.id)}
                 onClick={() => selectCategory(cat.id)}
               >
-                <img
-                  className="mega-cat-img"
-                  src={`https://picsum.photos/seed/cat${cat.id}/100/100`}
-                  alt=""
-                />
+                {cat.image_url ? (
+                  <img className="mega-cat-img" src={cat.image_url} alt="" />
+                ) : (
+                  <div className="mega-cat-img mega-cat-placeholder" />
+                )}
                 <span className="mega-cat-name">{cat.name}</span>
               </button>
             ))}
@@ -199,10 +199,11 @@ function App() {
                 </button>
               </div>
               <div className="mega-sub-image">
-                <img
-                  src={`https://picsum.photos/seed/${hoveredCatId}/480/360`}
-                  alt=""
-                />
+                {hoveredCat?.image_url ? (
+                  <img src={hoveredCat.image_url} alt="" />
+                ) : (
+                  <div className="mega-sub-img-placeholder" />
+                )}
               </div>
             </div>
           )}

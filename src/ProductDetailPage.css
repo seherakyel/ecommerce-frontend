@@ -1,27 +1,31 @@
-/* ===== Product Detail ===== */
+/* ===== Detail Layout ===== */
 .detail-layout {
   display: flex;
-  gap: 2rem;
+  gap: 3rem;
   align-items: flex-start;
-  max-width: 800px;
 }
 
-.detail-img {
-  width: 360px;
-  flex-shrink: 0;
+/* ===== Image Area ===== */
+.detail-image-area {
+  flex: 1;
+  position: relative;
+  min-width: 0;
+}
+
+.detail-main-img {
+  width: 100%;
   aspect-ratio: 1 / 1;
   object-fit: cover;
+  display: block;
   border-radius: var(--radius);
-  border: 1px solid var(--color-border);
+  background: var(--color-bg);
 }
 
 .detail-img-placeholder {
-  width: 360px;
-  flex-shrink: 0;
+  width: 100%;
   aspect-ratio: 1 / 1;
   background: var(--color-bg);
   border-radius: var(--radius);
-  border: 1px solid var(--color-border);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -29,69 +33,320 @@
   font-size: 0.95rem;
 }
 
-.detail-card {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  padding: 2rem;
-  flex: 1;
-  box-shadow: var(--shadow-sm);
-}
-
-.detail-card h1 {
-  margin-bottom: 0.75rem;
-}
-
-@media (max-width: 700px) {
-  .detail-layout {
-    flex-direction: column;
-  }
-
-  .detail-img,
-  .detail-img-placeholder {
-    width: 100%;
-  }
-}
-
-.detail-card .description {
-  color: var(--color-muted);
-  margin-bottom: 1rem;
-}
-
-.detail-card .price {
-  font-size: 1.4rem;
-  font-weight: 500;
-  color: var(--color-heading);
-  margin-bottom: 0.25rem;
-}
-
-.detail-card .stock {
-  font-size: 0.9rem;
-  color: var(--color-muted);
-  margin-bottom: 1.25rem;
-}
-
-.share-section {
-  margin-top: 1.5rem;
-  padding-top: 1.25rem;
-  border-top: 1px solid var(--color-border);
-}
-
-.share-section p {
-  font-weight: 500;
-  color: var(--color-heading);
-  margin-bottom: 0.5rem;
-  font-size: 0.9rem;
-}
-
-.share-buttons {
+/* ===== Image Action Buttons (top-right) ===== */
+.detail-img-actions {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 0.5rem;
 }
 
+.detail-action-btn {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--color-text);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: color 0.15s, background 0.15s, transform 0.15s;
+}
+
+.detail-action-btn svg {
+  width: 1.15rem;
+  height: 1.15rem;
+}
+
+.detail-action-btn:hover {
+  background: #fff;
+  transform: scale(1.08);
+}
+
+.detail-action-btn.active {
+  color: #972C34;
+}
+
+/* ===== Share Modal Overlay ===== */
+.share-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 999;
+  animation: overlayIn 0.2s ease;
+}
+
+@keyframes overlayIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ===== Share Modal ===== */
+.share-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--color-surface);
+  border-radius: var(--radius);
+  padding: 2.5rem 2.5rem 2rem;
+  z-index: 1000;
+  width: 90%;
+  max-width: 420px;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  animation: modalIn 0.25s ease;
+}
+
+@keyframes modalIn {
+  from { opacity: 0; transform: translate(-50%, -48%); }
+  to { opacity: 1; transform: translate(-50%, -50%); }
+}
+
+.share-modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1.25rem;
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  color: var(--color-muted);
+  cursor: pointer;
+  padding: 0.25rem;
+  line-height: 1;
+  transition: color 0.12s;
+}
+
+.share-modal-close:hover {
+  color: var(--color-heading);
+}
+
+.share-modal-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #323E48;
+  margin: 0 0 0.5rem;
+  letter-spacing: 0.01em;
+}
+
+.share-modal-desc {
+  font-size: 0.85rem;
+  color: #323E48;
+  margin: 0 0 1.5rem;
+  font-weight: 400;
+}
+
+/* ===== Social Icons Row ===== */
+.share-modal-icons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+}
+
+.share-circle {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  border: none;
+  background: #323E48;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.15s, opacity 0.15s;
+}
+
+.share-circle svg {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.share-circle:hover {
+  transform: scale(1.1);
+  opacity: 0.85;
+}
+
+/* ===== Copy Link Bar ===== */
+.share-modal-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #323E48;
+  border-radius: 6px;
+  padding: 0.65rem 1rem;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.share-modal-link:hover {
+  opacity: 0.9;
+}
+
+.share-modal-url {
+  flex: 1;
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.85);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: inherit;
+  letter-spacing: 0.01em;
+}
+
+.share-modal-link svg {
+  width: 1rem;
+  height: 1rem;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+/* ===== Product Info ===== */
+.detail-info {
+  flex: 1;
+  min-width: 0;
+  padding-top: 0.5rem;
+}
+
+.detail-name {
+  font-size: 1.5rem;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  line-height: 1.35;
+  margin: 0 0 1rem;
+  color: var(--color-heading);
+}
+
+.detail-description {
+  font-size: 0.9rem;
+  color: var(--color-muted);
+  line-height: 1.6;
+  margin: 0 0 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.detail-price {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--color-heading);
+  margin: 0 0 1.5rem;
+  letter-spacing: -0.01em;
+}
+
+/* ===== Quantity + Add to Cart ===== */
+.detail-cart-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.detail-qty {
+  display: flex;
+  align-items: center;
+  border: 1.5px solid var(--color-border);
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.detail-qty-btn {
+  width: 2.5rem;
+  height: 2.75rem;
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  font-family: inherit;
+  color: var(--color-text);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.12s;
+}
+
+.detail-qty-btn:hover:not(:disabled) {
+  background: var(--color-bg);
+}
+
+.detail-qty-btn:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.detail-qty-value {
+  width: 2.5rem;
+  text-align: center;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--color-heading);
+  border-left: 1.5px solid var(--color-border);
+  border-right: 1.5px solid var(--color-border);
+  height: 2.75rem;
+  line-height: 2.75rem;
+}
+
+.detail-add-btn {
+  flex: 1;
+  height: 2.75rem;
+  background: #323E48;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.detail-add-btn:hover {
+  background: #273038;
+}
+
+/* ===== Stock Status ===== */
+.detail-stock {
+  font-size: 0.82rem;
+  margin: 0;
+}
+
+.detail-stock.in-stock {
+  color: var(--color-success);
+}
+
+.detail-stock.out-of-stock {
+  color: var(--color-danger);
+}
+
+/* ===== Loading ===== */
 .loading {
   text-align: center;
   padding: 3rem;
   color: var(--color-muted);
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .detail-layout {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .detail-name {
+    font-size: 1.25rem;
+  }
+
+  .detail-price {
+    font-size: 1.35rem;
+  }
 }

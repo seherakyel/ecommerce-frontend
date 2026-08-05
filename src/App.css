@@ -488,3 +488,7 @@
   background: var(--color-border);
   margin: 0.35rem 0;
 }
+
+.account-dropdown-item:last-child {
+  color: #972C34;
+}

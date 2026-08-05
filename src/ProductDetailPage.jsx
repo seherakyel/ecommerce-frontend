@@ -246,38 +246,49 @@ function ProductDetailPage() {
               <span>Garanti</span>
             </div>
           </div>
-        </div>
-      </div>
 
-      {/* 5. Accordion Bölümleri */}
-      <div className="detail-accordions">
-        <div className={`detail-accordion${openAccordion === "description" ? " open" : ""}`}>
-          <button className="detail-accordion-header" onClick={() => toggleAccordion("description")}>
-            <span>Açıklama</span>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9" /></svg>
-          </button>
-          <div className="detail-accordion-body">
-            <p>{urun.description || "Bu ürün için henüz açıklama eklenmemiştir."}</p>
-          </div>
-        </div>
+          {/* 5. Accordion — sağ sütun içinde */}
+          <div className="detail-accordions">
+            <div className={`detail-accordion${openAccordion === "description" ? " open" : ""}`}>
+              <button className="detail-accordion-header" onClick={() => toggleAccordion("description")}>
+                <span>Ürün Açıklaması</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9" /></svg>
+              </button>
+              <div className="detail-accordion-body">
+                <p>{urun.description || "Bu ürün için henüz açıklama eklenmemiştir."}</p>
+              </div>
+            </div>
 
-        <div className={`detail-accordion${openAccordion === "shipping" ? " open" : ""}`}>
-          <button className="detail-accordion-header" onClick={() => toggleAccordion("shipping")}>
-            <span>Kargo Bilgileri</span>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9" /></svg>
-          </button>
-          <div className="detail-accordion-body">
-            <p>1.000 TL ve üzeri alışverişlerde kargo ücretsizdir. Siparişleriniz 1-3 iş günü içinde kargoya verilir. Kargo takip numarası e-posta ile iletilir.</p>
-          </div>
-        </div>
+            <div className={`detail-accordion${openAccordion === "specs" ? " open" : ""}`}>
+              <button className="detail-accordion-header" onClick={() => toggleAccordion("specs")}>
+                <span>Ölçüler & Özellikler</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9" /></svg>
+              </button>
+              <div className="detail-accordion-body">
+                <table className="detail-specs-table">
+                  <tbody>
+                    <tr><td>Stok Durumu</td><td>{urun.stock > 0 ? `${urun.stock} adet mevcut` : "Stokta yok"}</td></tr>
+                    {urun.category && <tr><td>Kategori</td><td>{urun.category.name}</td></tr>}
+                  </tbody>
+                </table>
+              </div>
+            </div>
 
-        <div className={`detail-accordion${openAccordion === "returns" ? " open" : ""}`}>
-          <button className="detail-accordion-header" onClick={() => toggleAccordion("returns")}>
-            <span>İade Koşulları</span>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9" /></svg>
-          </button>
-          <div className="detail-accordion-body">
-            <p>Ürünlerimizi teslim aldığınız tarihten itibaren 14 gün içinde, kullanılmamış ve orijinal ambalajında olmak koşuluyla ücretsiz iade edebilirsiniz.</p>
+            <div className={`detail-accordion${openAccordion === "installment" ? " open" : ""}`}>
+              <button className="detail-accordion-header" onClick={() => toggleAccordion("installment")}>
+                <span>Taksit Seçenekleri</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9" /></svg>
+              </button>
+              <div className="detail-accordion-body">
+                <table className="detail-specs-table">
+                  <tbody>
+                    <tr><td>Tek Çekim</td><td>{Number(urun.price).toLocaleString("tr-TR", { minimumFractionDigits: 2 })} TL</td></tr>
+                    <tr><td>3 Taksit</td><td>{(urun.price / 3).toLocaleString("tr-TR", { minimumFractionDigits: 2 })} TL x 3</td></tr>
+                    <tr><td>6 Taksit</td><td>{(urun.price / 6).toLocaleString("tr-TR", { minimumFractionDigits: 2 })} TL x 6</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -74,9 +74,10 @@ p { margin: 0 0 0.75rem; }
 
 .page-title {
   margin-bottom: 1.5rem;
-  font-size: 1.6rem;
-  font-weight: 300;
-  letter-spacing: 0.02em;
+  font-size: 1.5rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: var(--color-heading);
 }
 
 .back-link {
@@ -97,6 +98,66 @@ p { margin: 0 0 0.75rem; }
   background: var(--color-surface);
   border-radius: var(--radius);
   border: 1px dashed var(--color-border);
+}
+
+/* ===== Premium Empty State ===== */
+.empty-state-premium {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+}
+
+.empty-state-premium svg {
+  width: 4rem;
+  height: 4rem;
+  color: var(--color-border);
+  margin-bottom: 1.5rem;
+}
+
+.empty-state-premium h2 {
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: var(--color-heading);
+  margin: 0 0 0.5rem;
+}
+
+.empty-state-premium p {
+  font-size: 0.85rem;
+  color: var(--color-muted);
+  margin: 0 0 1.5rem;
+}
+
+/* ===== Shared Breadcrumb ===== */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 1.5rem;
+  font-size: 0.8rem;
+}
+
+.breadcrumb a {
+  color: var(--color-muted);
+  text-decoration: none;
+  transition: color 0.12s;
+}
+
+.breadcrumb a:hover {
+  color: var(--color-heading);
+  text-decoration: none;
+}
+
+.breadcrumb-sep {
+  margin: 0 0.5rem;
+  color: var(--color-border);
+}
+
+.breadcrumb-current {
+  color: var(--color-heading);
+  font-weight: 500;
 }
 
 /* ===== Shared Buttons ===== */

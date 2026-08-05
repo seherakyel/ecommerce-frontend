@@ -95,37 +95,81 @@ function CartPage() {
 
   return (
     <div className="page">
-      <Link to="/" className="back-link">← Ürünlere Dön</Link>
+      <nav className="breadcrumb">
+        <Link to="/">Ana Sayfa</Link>
+        <span className="breadcrumb-sep">/</span>
+        <span className="breadcrumb-current">Sepetim</span>
+      </nav>
       <h1 className="page-title">Sepetim</h1>
       {cart.length === 0 ? (
-        <p className="empty-state">Sepetin boş.</p>
+        <div className="empty-state-premium">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="9" cy="21" r="1" />
+            <circle cx="20" cy="21" r="1" />
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+          </svg>
+          <h2>Sepetiniz boş</h2>
+          <p>Sepetinize ürün ekleyerek alışverişe başlayabilirsiniz.</p>
+          <Link to="/" className="btn btn-primary">Alışverişe Başla</Link>
+        </div>
       ) : (
-        <div>
-          <div className="cart-list">
+        <div className="cart-layout">
+          <div className="cart-items">
             {cart.map((item) => (
               <div className="cart-item" key={item.id}>
-                <div className="cart-item-info">
-                  <h3>{item.product.name}</h3>
-                  <p>{item.product.price} TL</p>
+                <div className="cart-item-img" onClick={() => navigate(`/urun/${item.product.id}`)}>
+                  {item.product.image_url ? (
+                    <img src={item.product.image_url} alt={item.product.name} />
+                  ) : (
+                    <div className="cart-item-img-placeholder" />
+                  )}
                 </div>
-                <div className="cart-item-controls">
-                  <button className="btn-icon" onClick={() => updateQuantity(item.id, item.quantity - 1)}>−</button>
-                  <span>{item.quantity} adet</span>
-                  <button className="btn-icon" onClick={() => updateQuantity(item.id, item.quantity + 1)}>+</button>
+                <div className="cart-item-details">
+                  <h3 onClick={() => navigate(`/urun/${item.product.id}`)}>{item.product.name}</h3>
+                  <p className="cart-item-price">{Number(item.product.price).toLocaleString("tr-TR", { minimumFractionDigits: 2 })} TL</p>
+                  <div className="cart-item-bottom">
+                    <div className="cart-item-qty">
+                      <button onClick={() => updateQuantity(item.id, item.quantity - 1)}>−</button>
+                      <span>{item.quantity}</span>
+                      <button onClick={() => updateQuantity(item.id, item.quantity + 1)}>+</button>
+                    </div>
+                    <button className="cart-item-remove" onClick={() => removeItem(item.id)}>
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="3 6 5 6 21 6" />
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                      </svg>
+                      Kaldır
+                    </button>
+                  </div>
                 </div>
-                <button className="btn btn-danger btn-sm" onClick={() => removeItem(item.id)}>Sil</button>
               </div>
             ))}
           </div>
-          <div className="cart-summary">
+
+          <div className="cart-summary-card">
+            <h2>Sipariş Özeti</h2>
+
+            <div className="cart-summary-row">
+              <span>Ürünler ({cart.length})</span>
+              <span>{Number(total).toLocaleString("tr-TR", { minimumFractionDigits: 2 })} TL</span>
+            </div>
+            <div className="cart-summary-row">
+              <span>Kargo</span>
+              <span className="cart-free-shipping">Ücretsiz</span>
+            </div>
+            <div className="cart-summary-divider" />
+            <div className="cart-summary-row cart-summary-total">
+              <span>Toplam</span>
+              <span>{Number(total).toLocaleString("tr-TR", { minimumFractionDigits: 2 })} TL</span>
+            </div>
+
             {addresses.length === 0 ? (
-              <p>
-                Sipariş vermek için önce{" "}
-                <Link to="/addresses">adres eklemelisin</Link>.
+              <p className="cart-address-warn">
+                Sipariş vermek için <Link to="/addresses">adres eklemelisin</Link>.
               </p>
             ) : (
-              <div className="address-select">
-                <label>Teslimat Adresi: </label>
+              <div className="cart-address-select">
+                <label>Teslimat Adresi</label>
                 <select
                   value={selectedAddressId}
                   onChange={(e) => setSelectedAddressId(e.target.value)}
@@ -138,9 +182,9 @@ function CartPage() {
                 </select>
               </div>
             )}
-            <h2>Toplam: {total} TL</h2>
+
             <button
-              className="btn btn-primary"
+              className="cart-checkout-btn"
               onClick={placeOrder}
               disabled={addresses.length === 0}
             >

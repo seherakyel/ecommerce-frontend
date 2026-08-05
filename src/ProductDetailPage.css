@@ -1,33 +1,3 @@
-/* ===== Breadcrumb ===== */
-.breadcrumb {
-  display: flex;
-  align-items: center;
-  gap: 0;
-  margin-bottom: 1.5rem;
-  font-size: 0.8rem;
-}
-
-.breadcrumb a {
-  color: var(--color-muted);
-  text-decoration: none;
-  transition: color 0.12s;
-}
-
-.breadcrumb a:hover {
-  color: var(--color-heading);
-  text-decoration: none;
-}
-
-.breadcrumb-sep {
-  margin: 0 0.5rem;
-  color: var(--color-border);
-}
-
-.breadcrumb-current {
-  color: var(--color-heading);
-  font-weight: 500;
-}
-
 /* ===== Detail Layout ===== */
 .detail-layout {
   display: flex;

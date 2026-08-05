@@ -9,6 +9,7 @@ function ProductDetailPage() {
   const [quantity, setQuantity] = useState(1);
   const [isFavorite, setIsFavorite] = useState(false);
   const [shareOpen, setShareOpen] = useState(false);
+  const [openAccordion, setOpenAccordion] = useState("description");
 
   useEffect(() => {
     fetch(`http://127.0.0.1:8000/products/${id}`)
@@ -94,13 +95,28 @@ function ProductDetailPage() {
   const decreaseQty = () => { if (quantity > 1) setQuantity(quantity - 1); };
   const increaseQty = () => { if (urun && quantity < urun.stock) setQuantity(quantity + 1); };
 
+  const toggleAccordion = (key) => {
+    setOpenAccordion(openAccordion === key ? null : key);
+  };
+
   if (!urun) return <p className="loading">Yükleniyor...</p>;
+
+  const categoryName = urun.category?.name || "Ürünler";
 
   return (
     <div className="page">
-      <Link to="/" className="back-link">← Ürünlere Dön</Link>
+      {/* 1. Breadcrumb */}
+      <nav className="breadcrumb">
+        <Link to="/">Ana Sayfa</Link>
+        <span className="breadcrumb-sep">/</span>
+        <Link to={urun.category ? `/?category_id=${urun.category.id}` : "/"}>{categoryName}</Link>
+        <span className="breadcrumb-sep">/</span>
+        <span className="breadcrumb-current">{urun.name}</span>
+      </nav>
+
       <div className="detail-layout">
 
+        {/* Sol: Görsel Alanı */}
         <div className="detail-image-area">
           {urun.image_url ? (
             <img className="detail-main-img" src={urun.image_url} alt={urun.name} />
@@ -130,6 +146,19 @@ function ProductDetailPage() {
             </button>
           </div>
 
+          {/* 2. Thumbnail Galerisi (demo — tek görsel) */}
+          <div className="detail-thumbnails">
+            {[0, 1, 2, 3].map((i) => (
+              <div className={`detail-thumb${i === 0 ? " active" : ""}`} key={i}>
+                {urun.image_url ? (
+                  <img src={urun.image_url} alt={`${urun.name} - ${i + 1}`} />
+                ) : (
+                  <div className="detail-thumb-placeholder" />
+                )}
+              </div>
+            ))}
+          </div>
+
           {shareOpen && (
             <>
               <div className="share-overlay" onClick={() => setShareOpen(false)} />
@@ -157,12 +186,21 @@ function ProductDetailPage() {
           )}
         </div>
 
+        {/* Sağ: Ürün Bilgileri */}
         <div className="detail-info">
           <h1 className="detail-name">{urun.name}</h1>
 
-          {urun.description && (
-            <p className="detail-description">{urun.description}</p>
-          )}
+          {/* 3. Yıldız Rating (statik placeholder) */}
+          <div className="detail-rating">
+            <div className="detail-stars">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <svg key={star} viewBox="0 0 24 24" fill={star <= 4 ? "#f59e0b" : "none"} stroke="#f59e0b" strokeWidth="1.5">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                </svg>
+              ))}
+            </div>
+            <span className="detail-rating-text">Henüz değerlendirme yok</span>
+          </div>
 
           <p className="detail-price">
             {Number(urun.price).toLocaleString("tr-TR", { minimumFractionDigits: 2 })} TL
@@ -182,6 +220,65 @@ function ProductDetailPage() {
           ) : (
             <p className="detail-stock out-of-stock">Stokta yok</p>
           )}
+
+          {/* 4. Kargo / İade / Garanti Rozetleri (statik) */}
+          <div className="detail-badges">
+            <div className="detail-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="1" y="3" width="15" height="13" rx="2" />
+                <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
+                <circle cx="5.5" cy="18.5" r="2.5" />
+                <circle cx="18.5" cy="18.5" r="2.5" />
+              </svg>
+              <span>Ücretsiz Kargo</span>
+            </div>
+            <div className="detail-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="1 4 1 10 7 10" />
+                <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
+              </svg>
+              <span>Kolay İade</span>
+            </div>
+            <div className="detail-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+              </svg>
+              <span>Garanti</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 5. Accordion Bölümleri */}
+      <div className="detail-accordions">
+        <div className={`detail-accordion${openAccordion === "description" ? " open" : ""}`}>
+          <button className="detail-accordion-header" onClick={() => toggleAccordion("description")}>
+            <span>Açıklama</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9" /></svg>
+          </button>
+          <div className="detail-accordion-body">
+            <p>{urun.description || "Bu ürün için henüz açıklama eklenmemiştir."}</p>
+          </div>
+        </div>
+
+        <div className={`detail-accordion${openAccordion === "shipping" ? " open" : ""}`}>
+          <button className="detail-accordion-header" onClick={() => toggleAccordion("shipping")}>
+            <span>Kargo Bilgileri</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9" /></svg>
+          </button>
+          <div className="detail-accordion-body">
+            <p>1.000 TL ve üzeri alışverişlerde kargo ücretsizdir. Siparişleriniz 1-3 iş günü içinde kargoya verilir. Kargo takip numarası e-posta ile iletilir.</p>
+          </div>
+        </div>
+
+        <div className={`detail-accordion${openAccordion === "returns" ? " open" : ""}`}>
+          <button className="detail-accordion-header" onClick={() => toggleAccordion("returns")}>
+            <span>İade Koşulları</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9" /></svg>
+          </button>
+          <div className="detail-accordion-body">
+            <p>Ürünlerimizi teslim aldığınız tarihten itibaren 14 gün içinde, kullanılmamış ve orijinal ambalajında olmak koşuluyla ücretsiz iade edebilirsiniz.</p>
+          </div>
         </div>
       </div>
     </div>

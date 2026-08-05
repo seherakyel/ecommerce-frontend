@@ -15,6 +15,7 @@
   flex-direction: column;
   transition: box-shadow 0.25s;
   border: 1px solid var(--color-border);
+  cursor: pointer;
 }
 
 .product-card:hover {

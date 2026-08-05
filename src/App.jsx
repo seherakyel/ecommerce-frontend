@@ -8,6 +8,8 @@ import RegisterPage from "./RegisterPage";
 import OrdersPage from "./OrdersPage";
 import ProtectedRoute from "./ProtectedRoute";
 import FavoritesPage from "./FavoritesPage";
+import ProfilePage from "./ProfilePage";
+import AddressesPage from "./AddressesPage";
 import "./App.css";
 
 function App() {
@@ -149,8 +151,14 @@ function App() {
                 <div className="account-dropdown-arrow" />
                 {token ? (
                   <>
+                    <Link to="/profile" className="account-dropdown-item">
+                      <span>Profilim</span>
+                    </Link>
                     <Link to="/orders" className="account-dropdown-item">
                       <span>Siparişlerim</span>
+                    </Link>
+                    <Link to="/addresses" className="account-dropdown-item">
+                      <span>Adreslerim</span>
                     </Link>
                     <Link to="/favorites" className="account-dropdown-item">
                       <span>Favorilerim</span>
@@ -240,6 +248,20 @@ function App() {
             }/>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <ProfilePage />
+              </ProtectedRoute>
+            }/>
+          <Route
+            path="/addresses"
+            element={
+              <ProtectedRoute>
+                <AddressesPage />
+              </ProtectedRoute>
+            }/>
           <Route
             path="/orders"
             element={

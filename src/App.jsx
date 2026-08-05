@@ -138,23 +138,40 @@ function App() {
               </svg>
               <span>Sepetim</span>
             </Link>
-            {token ? (
-              <button className="nav-action" onClick={cikisYap}>
+            <div className="account-wrapper">
+              <button className="nav-action account-trigger">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
                   <circle cx="12" cy="7" r="4" />
                 </svg>
-                <span>Çıkış Yap</span>
               </button>
-            ) : (
-              <Link to="/login" className="nav-action">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                  <circle cx="12" cy="7" r="4" />
-                </svg>
-                <span>Hesabım</span>
-              </Link>
-            )}
+              <div className="account-dropdown">
+                <div className="account-dropdown-arrow" />
+                {token ? (
+                  <>
+                    <Link to="/orders" className="account-dropdown-item">
+                      <span>Siparişlerim</span>
+                    </Link>
+                    <Link to="/favorites" className="account-dropdown-item">
+                      <span>Favorilerim</span>
+                    </Link>
+                    <div className="account-dropdown-divider" />
+                    <button className="account-dropdown-item" onClick={cikisYap}>
+                      <span>Çıkış Yap</span>
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <Link to="/login" className="account-dropdown-item">
+                      <span>Giriş Yap</span>
+                    </Link>
+                    <Link to="/register" className="account-dropdown-item">
+                      <span>Kayıt Ol</span>
+                    </Link>
+                  </>
+                )}
+              </div>
+            </div>
           </div>
         </nav>
       </header>

@@ -443,44 +443,64 @@
 /* ===== Accordion ===== */
 .detail-accordions {
   margin-top: auto;
-  padding-top: 1rem;
-  border-top: 1px solid var(--color-border);
+  padding-top: 0;
 }
 
 .detail-accordion {
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: 1px solid #eee;
+}
+
+.detail-accordion:first-child {
+  border-top: 1px solid #eee;
 }
 
 .detail-accordion-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   width: 100%;
-  padding: 1.1rem 0;
+  padding: 1.2rem 0;
   background: none;
   border: none;
   font-family: inherit;
-  font-size: 0.92rem;
-  font-weight: 500;
+  font-size: 0.95rem;
+  font-weight: 400;
   color: var(--color-heading);
   cursor: pointer;
-  transition: color 0.12s;
+  gap: 0.85rem;
+  outline: none;
+  box-shadow: none;
+}
+
+.detail-accordion-header:focus {
+  outline: none;
+  box-shadow: none;
 }
 
 .detail-accordion-header:hover {
   color: var(--color-accent);
 }
 
-.detail-accordion-header svg {
-  width: 1.1rem;
-  height: 1.1rem;
-  color: var(--color-muted);
-  transition: transform 0.25s ease;
+.accordion-icon-left {
+  width: 1.3rem;
+  height: 1.3rem;
+  color: var(--color-heading);
   flex-shrink: 0;
 }
 
-.detail-accordion.open .detail-accordion-header svg {
-  transform: rotate(180deg);
+.detail-accordion-header span:not(.accordion-toggle) {
+  flex: 1;
+  text-align: left;
+}
+
+.accordion-toggle {
+  font-size: 1.3rem;
+  font-weight: 300;
+  color: var(--color-heading);
+  flex-shrink: 0;
+  line-height: 1;
+  width: 1.2rem;
+  text-align: center;
+  transition: transform 0.2s ease;
 }
 
 .detail-accordion-body {
@@ -490,15 +510,19 @@
 }
 
 .detail-accordion.open .detail-accordion-body {
-  max-height: 300px;
+  max-height: 400px;
   padding-bottom: 1.25rem;
 }
 
 .detail-accordion-body p {
-  font-size: 0.88rem;
+  font-size: 0.85rem;
   color: var(--color-muted);
   line-height: 1.7;
-  margin: 0;
+  margin: 0 0 0.75rem;
+}
+
+.detail-accordion-body p:last-child {
+  margin-bottom: 0;
 }
 
 /* ===== Specs / Installment Table ===== */

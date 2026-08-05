@@ -306,8 +306,8 @@
 }
 
 .mega-sub-image img {
-  max-width: 100%;
-  height: 240px;
+  width: 500px;
+  height: 280px;
   object-fit: cover;
   border-radius: var(--radius);
 }

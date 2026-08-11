@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import "./ProductsPage.css";
+import { API_URL } from "./config";
 
 function ProductsPage() {
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ function ProductsPage() {
   const categoryId = searchParams.get("category_id") || "";
 
   const fetchProducts = () => {
-    let url = "http://127.0.0.1:8000/products/";
+    let url = `${API_URL}/products/`;
     const params = [];
     if (search) params.push(`search=${encodeURIComponent(search)}`);
     if (categoryId) params.push(`category_id=${categoryId}`);
@@ -26,7 +27,7 @@ function ProductsPage() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      fetch("http://127.0.0.1:8000/favorites/", {
+      fetch(`${API_URL}/favorites/`, {
         headers: { Authorization: `Bearer ${token}` },
       })
         .then((r) => (r.ok ? r.json() : null))
@@ -45,7 +46,7 @@ function ProductsPage() {
       navigate("/login");
       return;
     }
-    fetch("http://127.0.0.1:8000/cart/items", {
+    fetch(`${API_URL}/cart/items`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -66,12 +67,12 @@ function ProductsPage() {
     }
     const isFavorite = favorites.includes(productId);
     if (isFavorite) {
-      fetch(`http://127.0.0.1:8000/favorites/${productId}`, {
+      fetch(`${API_URL}/favorites/${productId}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       }).then(() => setFavorites(favorites.filter((id) => id !== productId)));
     } else {
-      fetch("http://127.0.0.1:8000/favorites/", {
+      fetch(`${API_URL}/favorites/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

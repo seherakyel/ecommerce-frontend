@@ -1,3 +1,4 @@
+import { API_URL } from "./config";
 import { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import "./ProductDetailPage.css";
@@ -13,7 +14,7 @@ function ProductDetailPage() {
   const [zoomStyle, setZoomStyle] = useState({});
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/products/${id}`)
+    fetch(`${API_URL}/products/${id}`)
       .then((r) => r.json())
       .then((data) => setUrun(data));
   }, [id]);
@@ -21,7 +22,7 @@ function ProductDetailPage() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      fetch("http://127.0.0.1:8000/favorites/", {
+      fetch(`${API_URL}/favorites/`, {
         headers: { Authorization: `Bearer ${token}` },
       })
         .then((r) => (r.ok ? r.json() : null))
@@ -40,7 +41,7 @@ function ProductDetailPage() {
       navigate("/login");
       return;
     }
-    fetch("http://127.0.0.1:8000/cart/items", {
+    fetch(`${API_URL}/cart/items`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -60,12 +61,12 @@ function ProductDetailPage() {
       return;
     }
     if (isFavorite) {
-      fetch(`http://127.0.0.1:8000/favorites/${urun.id}`, {
+      fetch(`${API_URL}/favorites/${urun.id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       }).then(() => setIsFavorite(false));
     } else {
-      fetch("http://127.0.0.1:8000/favorites/", {
+      fetch(`${API_URL}/favorites/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

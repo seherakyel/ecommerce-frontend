@@ -1,3 +1,4 @@
+import { API_URL } from "./config";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./ProfilePage.css";
@@ -21,7 +22,7 @@ function ProfilePage() {
   };
 
   const fetchProfile = () => {
-    fetch("http://127.0.0.1:8000/auth/me", {
+    fetch(`${API_URL}/auth/me`, {
       headers: authHeader(),
     })
       .then((r) => {
@@ -42,7 +43,7 @@ function ProfilePage() {
   }, []);
 
   const handleSave = () => {
-    fetch("http://127.0.0.1:8000/auth/me", {
+    fetch(`${API_URL}/auth/me`, {
       method: "PATCH",
       headers: authHeader(),
       body: JSON.stringify({ name, email }),

@@ -61,7 +61,7 @@ function App() {
     if (subCatCache.current[catId]) {
       setSubCats(subCatCache.current[catId]);
     } else {
-      fetch(`${API_URL}/ategories/?parent_id=${catId}`)
+      fetch(`${API_URL}/categories/?parent_id=${catId}`)
         .then((r) => r.json())
         .then((data) => {
           if (Array.isArray(data)) {

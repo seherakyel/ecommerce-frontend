@@ -1,3 +1,4 @@
+import { API_URL } from "./config";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./FavoritesPage.css";
@@ -13,7 +14,7 @@ function FavoritesPage() {
   };
 
   const fetchFavorites = () => {
-    fetch("http://127.0.0.1:8000/favorites/", {
+    fetch(`${API_URL}/favorites/`, {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     })
       .then((r) => {
@@ -28,7 +29,7 @@ function FavoritesPage() {
   }, []);
 
   const removeFavorite = (productId) => {
-    fetch(`http://127.0.0.1:8000/favorites/${productId}`, {
+    fetch(`${API_URL}/favorites/${productId}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     }).then(() => fetchFavorites());
@@ -36,7 +37,7 @@ function FavoritesPage() {
 
   const sepeteEkle = (productId) => {
     const token = localStorage.getItem("token");
-    fetch("http://127.0.0.1:8000/cart/items", {
+    fetch(`${API_URL}/cart/items`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

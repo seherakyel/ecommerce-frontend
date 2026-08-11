@@ -1,3 +1,4 @@
+import { API_URL } from "./config";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import ProductsPage from "./ProductsPage";
@@ -41,7 +42,7 @@ function App() {
   const categoryOrder = [1, 23, 41, 49, 54, 79, 102, 130, 149, 164, 179];
 
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/categories/")
+    fetch(`${API_URL}/categories/`)
       .then((r) => r.json())
       .then((data) => {
         if (Array.isArray(data)) {
@@ -60,7 +61,7 @@ function App() {
     if (subCatCache.current[catId]) {
       setSubCats(subCatCache.current[catId]);
     } else {
-      fetch(`http://127.0.0.1:8000/categories/?parent_id=${catId}`)
+      fetch(`${API_URL}/ategories/?parent_id=${catId}`)
         .then((r) => r.json())
         .then((data) => {
           if (Array.isArray(data)) {

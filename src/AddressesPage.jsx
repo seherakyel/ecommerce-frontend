@@ -1,3 +1,4 @@
+import { API_URL } from "./config";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./AddressesPage.css";
@@ -22,7 +23,7 @@ function AddressesPage() {
   };
 
   const fetchAddresses = () => {
-    fetch("http://127.0.0.1:8000/addresses/", {
+    fetch(`${API_URL}/addresses/`, {
       headers: authHeader(),
     })
       .then((r) => {
@@ -51,8 +52,8 @@ function AddressesPage() {
     }
 
     const url = editingId
-      ? `http://127.0.0.1:8000/addresses/${editingId}`
-      : "http://127.0.0.1:8000/addresses/";
+      ? `${API_URL}/addresses/${editingId}`
+      : `${API_URL}/addresses/`;
     const method = editingId ? "PUT" : "POST";
 
     fetch(url, {
@@ -87,7 +88,7 @@ function AddressesPage() {
   };
 
   const handleDelete = (id) => {
-    fetch(`http://127.0.0.1:8000/addresses/${id}`, {
+    fetch(`${API_URL}/addresses/${id}`, {
       method: "DELETE",
       headers: authHeader(),
     }).then(() => fetchAddresses());

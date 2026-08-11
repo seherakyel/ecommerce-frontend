@@ -1,3 +1,4 @@
+import { API_URL } from "./config";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./CartPage.css";
@@ -19,7 +20,7 @@ function CartPage() {
   };
 
   const fetchCart = () => {
-    fetch("http://127.0.0.1:8000/cart/", {
+    fetch(`${API_URL}/cart/`, {
       headers: authHeader(),
     })
       .then((r) => {
@@ -30,7 +31,7 @@ function CartPage() {
   };
 
   const fetchAddresses = () => {
-    fetch("http://127.0.0.1:8000/addresses/", {
+    fetch(`${API_URL}/addresses/`, {
       headers: authHeader(),
     })
       .then((r) => {
@@ -51,15 +52,14 @@ function CartPage() {
   }, []);
 
   const removeItem = (itemId) => {
-    fetch(`http://127.0.0.1:8000/cart/items/${itemId}`, {
+    fetch(`${API_URL}/art/items/${itemId}`, {
       method: "DELETE",
       headers: authHeader(),
     }).then(() => fetchCart());
   };
 
   const updateQuantity = (itemId, newQuantity) => {
-    fetch(
-      `http://127.0.0.1:8000/cart/items/${itemId}?quantity=${newQuantity}`,
+    fetch(`${API_URL}/cart/items/${itemId}?quantity=${newQuantity}`,
       { method: "PATCH", headers: authHeader() }
     ).then(() => fetchCart());
   };
@@ -70,7 +70,7 @@ function CartPage() {
       return;
     }
 
-    fetch("http://127.0.0.1:8000/orders/", {
+    fetch(`${API_URL}/orders/`, {
       method: "POST",
       headers: authHeader(),
       body: JSON.stringify({ address_id: selectedAddressId }),

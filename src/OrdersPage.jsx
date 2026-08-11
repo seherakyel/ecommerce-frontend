@@ -1,3 +1,4 @@
+import { API_URL } from "./config";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./OrdersPage.css";
@@ -7,7 +8,7 @@ function OrdersPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/orders/", {
+    fetch(`${API_URL}/orders/`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },

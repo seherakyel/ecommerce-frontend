@@ -54,7 +54,7 @@ function AddressesPage() {
     const url = editingId
       ? `${API_URL}/addresses/${editingId}`
       : `${API_URL}/addresses/`;
-    const method = editingId ? "PUT" : "POST";
+      const method = editingId ? "PATCH" : "POST";
 
     fetch(url, {
       method,

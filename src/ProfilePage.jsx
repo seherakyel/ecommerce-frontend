@@ -6,7 +6,9 @@ import "./ProfilePage.css";
 function ProfilePage() {
   const [user, setUser] = useState(null);
   const [editing, setEditing] = useState(false);
-  const [name, setName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
@@ -32,7 +34,9 @@ function ProfilePage() {
       .then((data) => {
         if (data) {
           setUser(data);
-          setName(data.name || "");
+          setFirstName(data.first_name || "");
+          setLastName(data.last_name || "");
+          setPhone(data.phone || "");
           setEmail(data.email || "");
         }
       });
@@ -46,7 +50,7 @@ function ProfilePage() {
     fetch(`${API_URL}/auth/me`, {
       method: "PATCH",
       headers: authHeader(),
-      body: JSON.stringify({ name, email }),
+      body: JSON.stringify({ first_name: firstName, last_name: lastName, phone }),
     })
       .then((r) => {
         if (r.status === 401) { handleUnauth(); return null; }
@@ -82,27 +86,42 @@ function ProfilePage() {
         {editing ? (
           <div className="profile-form">
             <div className="form-group">
-              <label>Ad Soyad</label>
-              <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Ad Soyad" />
+              <label>Ad</label>
+              <input value={firstName} onChange={(e) => setFirstName(e.target.value)} placeholder="Ad" />
+            </div>
+            <div className="form-group">
+              <label>Soyad</label>
+              <input value={lastName} onChange={(e) => setLastName(e.target.value)} placeholder="Soyad" />
             </div>
             <div className="form-group">
               <label>E-posta</label>
               <input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="E-posta" type="email" />
             </div>
+            <div className="form-group">
+              <label>Telefon</label>
+              <input value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="Telefon" />            </div>
             <div className="profile-actions">
               <button className="btn btn-primary" onClick={handleSave}>Kaydet</button>
-              <button className="btn btn-outline" onClick={() => { setEditing(false); setName(user.name || ""); setEmail(user.email || ""); }}>İptal</button>
+              <button className="btn btn-outline" onClick={() => { setEditing(false); setFirstName(user.first_name || ""); setLastName(user.last_name || ""); setPhone(user.phone || ""); }}>İptal</button>
             </div>
           </div>
         ) : (
           <div className="profile-info">
             <div className="profile-row">
-              <span className="profile-label">Ad Soyad</span>
-              <span className="profile-value">{user.name || "—"}</span>
+              <span className="profile-label">Ad</span>
+              <span className="profile-value">{user.first_name || "—"}</span>
+            </div>
+            <div className="profile-row">
+              <span className="profile-label">Soyad</span>
+              <span className="profile-value">{user.last_name || "—"}</span>
             </div>
             <div className="profile-row">
               <span className="profile-label">E-posta</span>
               <span className="profile-value">{user.email}</span>
+            </div>
+            <div className="profile-row">
+              <span className="profile-label">Telefon</span>
+              <span className="profile-value">{user.phone || "—"}</span>
             </div>
             <button className="btn btn-outline" onClick={() => setEditing(true)}>Düzenle</button>
           </div>
